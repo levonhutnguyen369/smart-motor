@@ -60,7 +60,9 @@ public class MqttConfig {
                         clientId,
                         mqttClientFactory(),
                         "bike/telemetry",
-                        "bike/alert"
+                        "bike/alert",
+                        "bike/battery/+",
+                        "bike/balance/response/+"
                 );
 
         adapter.setQos(1);

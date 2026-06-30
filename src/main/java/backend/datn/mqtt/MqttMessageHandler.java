@@ -22,14 +22,17 @@ public class MqttMessageHandler {
 
     private final AlertService alertService;
 
+    private final MqttPublisherService mqttPublisherService;
+
     @Autowired
     private DeviceRepository deviceRepository;
 
     public MqttMessageHandler(
             ObjectMapper mapper,
             TelemetryService telemetryService,
-            AlertService alertService)
+            AlertService alertService, MqttPublisherService mqttPublisherService)
     {
+        this.mqttPublisherService = mqttPublisherService;
         System.out.println("MqttMessageHandler CREATED");
 
         this.mapper = mapper;
@@ -95,7 +98,7 @@ public class MqttMessageHandler {
             Device device = deviceRepository.findByDeviceId("bike001").orElse(null);
             if (device != null) {
                 String[] parts = payload.split(",");
-                if (parts.length == 2) {
+                if (parts.length <= 7) {
                     try {
                         double batteryVoltage = Double.parseDouble(parts[0]);
                         int batteryPercent = Integer.parseInt(parts[1]);
@@ -111,6 +114,20 @@ public class MqttMessageHandler {
                 System.out.println("Device not found");
             }
         }
+
+        if (topic.startsWith("bike/balance/response/")) {
+            System.out.println("MATCH");
+        }
+
+        if (topic.equals("bike/balance/response/bike001")) {
+            Device device = deviceRepository.findByDeviceId("bike001").orElse(null);
+            if (device != null) {
+                mqttPublisherService.publish("app/balance/response/bike001",  payload);
+            } else {
+                System.out.println("Device not found");
+            }
+        }
+
 
     }
 }

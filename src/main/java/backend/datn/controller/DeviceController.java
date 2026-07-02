@@ -3,6 +3,7 @@ package backend.datn.controller;
 
 import backend.datn.dto.ApiResponse;
 import backend.datn.entity.Device;
+import backend.datn.entity.User;
 import backend.datn.service.DeviceService;
 import backend.datn.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -45,11 +46,12 @@ public class DeviceController {
         return deviceService.getByDeviceId(deviceId);
     }
 
-    @PostMapping("{deviceId}/command")
+    @PostMapping("/command")
     public ResponseEntity<ApiResponse<String>> sendDeviceCommand(
-            @PathVariable String deviceId,
+            @RequestHeader("Authorization") String token,
             @RequestBody String command) {
-        String result = deviceService.sendDeviceCommand(deviceId, command);
+        Long userId = jwtService.getUserIdFromToken(token);
+        String result = deviceService.sendDeviceCommand(userId, command);
 
         ApiResponse<String> response = new ApiResponse<>();
         response.setSuccess(true);

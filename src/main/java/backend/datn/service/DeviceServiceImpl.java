@@ -31,7 +31,10 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public String sendDeviceCommand(String deviceId, String command) {
+    public String sendDeviceCommand(Long userId, String command) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        String deviceId = user.getDevice().getDeviceId();
         Device device = getByDeviceId(deviceId);
         if (device == null) {
             throw new RuntimeException("Device not found with id: " + deviceId);

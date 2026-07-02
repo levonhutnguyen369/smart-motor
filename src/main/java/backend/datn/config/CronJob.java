@@ -8,11 +8,10 @@ import org.springframework.web.client.RestTemplate;
 public class CronJob {
 
     // Chạy mỗi 14 phút
-    @Scheduled(fixedRate = 840000)
+    @Scheduled(fixedRate = 240000)
     public void keepServerAwake() {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            // Thay URL dưới đây bằng domain thực tế của bạn trên Render
             String url = "https://smart-motor-bakend-1.onrender.com";
             String response = restTemplate.getForObject(url, String.class);
             System.out.println("Self-ping success: " + response);

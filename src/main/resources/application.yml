@@ -20,3 +20,8 @@ mqtt:
   client-id: spring-tracker-${random.uuid}
   telemetry-topic: bike/telemetry
   alert-topic: bike/alert
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.web.servlet.DispatcherServlet: DEBUG

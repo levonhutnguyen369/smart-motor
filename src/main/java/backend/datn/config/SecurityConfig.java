@@ -24,7 +24,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll() // Cho phép truy cập các endpoint /api/auth/** mà không cần xác thực
                         .requestMatchers("/api/ping/**").permitAll()
                         .anyRequest().authenticated() // Còn lại phải có Token
                 )

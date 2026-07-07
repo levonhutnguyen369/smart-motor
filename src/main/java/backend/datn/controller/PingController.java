@@ -43,6 +43,16 @@ public class PingController {
 
     @GetMapping("/test-env")
     public String test1() {
-        return "MAIL_HOST = " + env.getProperty("MAIL_HOST");
+        return """
+            MAIL_HOST = %s
+            MAIL_PORT = %s
+            MAIL_USERNAME = %s
+            MAIL_PASSWORD = %s
+            """.formatted(
+                env.getProperty("MAIL_HOST"),
+                env.getProperty("MAIL_PORT"),
+                env.getProperty("MAIL_USERNAME"),
+                env.getProperty("MAIL_PASSWORD")
+        );
     }
 }
